@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="Simple PWA Weather App" />
+        <link rel="stylesheet" href="/style.css" />
+        <link rel="manifest" href="manifest.json" />
+        <title>PWA Weather App</title>
+    
+        <!-- iOS PWA Support -->
+        <link rel="apple-touch-icon" href="icons/apple-icon-180.png">
+        <meta name="mobile-web-app-capable" content="yes">
+    
+        <!-- Apple Splash Screens -->
+        <!-- iPad Pro 12.9" -->
+        <link rel="apple-touch-startup-image" href="icons/apple-splash-2048-2732.jpg" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+        <link rel="apple-touch-startup-image" href="icons/apple-splash-2732-2048.jpg" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    
+        <!-- iPad Pro 11" -->
+        <link rel="apple-touch-startup-image" href="icons/apple-splash-1668-2388.jpg" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+        <link rel="apple-touch-startup-image" href="icons/apple-splash-2388-1668.jpg" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    
+        <!-- iPad (7th gen) -->
+        <link rel="apple-touch-startup-image" href="icons/apple-splash-1536-2048.jpg" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
+        <link rel="apple-touch-startup-image" href="icons/apple-splash-2048-1536.jpg" media="(device-width: 768px) and (device-height: 1024px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
+    
+        <!-- iPhone 14 Pro Max -->
+        <link rel="apple-touch-startup-image" href="icons/apple-splash-1290-2796.jpg" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+        <link rel="apple-touch-startup-image" href="icons/apple-splash-2796-1290.jpg" media="(device-width: 430px) and (device-height: 932px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
+    
+        <!-- iPhone 13/13 Pro -->
+        <link rel="apple-touch-startup-image" href="icons/apple-splash-1170-2532.jpg" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: portrait)">
+        <link rel="apple-touch-startup-image" href="icons/apple-splash-2532-1170.jpg" media="(device-width: 390px) and (device-height: 844px) and (-webkit-device-pixel-ratio: 3) and (orientation: landscape)">
+    </head>
+    
+<body>
+    <header class="header">
+        <h1>Weather PWA</h1>
+    </header>
+
+    <main class="main">
+        <div class="weather-card">
+            <div class="location-container">
+                <input type="text" id="location-input" placeholder="Enter city name">
+                <button id="search-btn">Search</button>
+            </div>
+
+            
+            
+            <div id="weather-container" class="weather-container">
+                <div class="location-info">
+                    <h2 id="city"></h2>
+                    <p id="date"></p>
+                </div>
+                
+                <div class="current-weather">
+                    <img loading="lazy" id="weather-icon" src="" alt="Weather icon">
+                    <div class="temperature-container">
+                        <h3 id="temperature">--°C</h3>
+                        <p id="weather-description">--</p>
+                    </div>
+                </div>
+                
+                <div class="weather-details">
+                    <div class="detail">
+                        <img loading="lazy" id="humidity-icon" src="/images/humidity.png" alt="Humidity icon">
+                        <span class="label">Humidity</span>
+                        <span id="humidity" class="value">--%</span>
+                    </div>
+                    <div class="detail">
+                        <img loading="lazy" id="wind-icon" src="/images/wind.png" alt="Wind icon">
+                        <span class="label">Wind</span>
+                        <span id="wind" class="value"></span>
+                    </div>
+                </div>
+            </div>
+            
+            
+            <div class="error">
+                <p id="error-message"></p>
+            </div>
+            
+            <div id="offline-message" class="offline-message">
+                You are currently offline. Weather data may not be up-to-date.
+            </div>
+        </div>
+    </main>
+
+   
+    <script src="/app.js"></script>
+   
+      
+    
+</body>
+</html>
