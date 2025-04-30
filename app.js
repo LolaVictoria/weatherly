@@ -4,21 +4,26 @@ const BASE_URL = `https://api.openweathermap.org/data/2.5/weather?&appid=${CONFI
 const cityName = document.getElementById('location-input');
 const searchButton = document.getElementById('search-btn');
 const weatherIcon = document.getElementById('weather-icon');
-// const loadingText = document.getElementById('loading-text');
 
 async function checkWeather(city){
+    if(city.length == 0) {
+        document.getElementsByClassName('error')[0].style.display = 'block';
+        document.getElementsByClassName('error')[0].innerHTML = "Please enter a city name!";
+        document.getElementsByClassName('error')[0].style.color = 'red';
+        document.getElementById('weather-container').style.display = 'none'; 
+        return;
+    }
     const response = await fetch(BASE_URL + city);
-    document.getElementsByClassName('loading')[0].style.display = 'block';
+    document.getElementsByClassName('error')[0].style.display = 'block';
+    document.getElementsByClassName('error')[0].innerHTML = "Wait a sec, your location's data will be displayed soon!";
 
-    // loadingText.style.display = 'block';
     if (response.status == 404) {
         document.getElementsByClassName('error')[0].style.display = 'block';
         document.getElementsByClassName('error')[0].innerHTML = "City not found! Please enter a valid city name.";
-        loadingText.style.display = 'none'
+        document.getElementsByClassName('error')[0].style.color = 'red';
         document.getElementById('weather-container').style.display = 'none';       
     } else {
     const data = await response.json();
-    // loadingText.style.display = 'none'
     document.getElementById('weather-container').style.display = 'block';
     document.getElementsByClassName('error')[0].style.display = 'none';
   

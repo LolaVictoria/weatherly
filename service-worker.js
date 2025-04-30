@@ -1,17 +1,24 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.5.4/workbox-sw.js');
- 
-    
+workbox.core.skipWaiting();
+workbox.core.clientsClaim();
  // Check if Workbox is loaded
 if (workbox) {
   console.log(`Yay! Workbox is loaded 🎉`);
 
   // Precache essential files
   workbox.precaching.precacheAndRoute([
-    {url: '/index.html', revision: '1'},  // HTML page
-    {url: '/style.css', revision: '1'},  // CSS file
-    {url: '/app.js', revision: '1'},  // JS file
+    {url: '/index.html', revision: '3'},
+    {url: '/style.css', revision: '4'},  // CSS file
+    {url: '/app.js', revision: '6'},  // JS file
+    { url: '/images/logo.png', revision: '3' },
     {url: '/offline.html', revision: '1'},  // fallback file
   ]);
+
+  // Serve HTML with network-first or stale-while-revalidate - This ensures you get updated HTML on refresh.
+// workbox.routing.registerRoute(
+//   ({ request }) => request.destination === 'document',
+//   new workbox.strategies.StaleWhileRevalidate()
+// );
 
   // Cache weather API responses (Caching API Requests)
   workbox.routing.registerRoute(
@@ -65,4 +72,23 @@ workbox.routing.registerRoute(
 
 } else {
   console.log(`Boo! Workbox didn't load 😬`);
+
+
+  
+
+
+  //clean up old caches
+  self.addEventListener('activate', event => {
+    const keepList = [workbox.core.cacheNames.precache];
+    event.waitUntil(
+      caches.keys().then(keys =>
+        Promise.all(keys.map(key => {
+          if (!keepList.includes(key)) {
+            return caches.delete(key);
+          }
+        }))
+      )
+    );
+  });
+  
 }
