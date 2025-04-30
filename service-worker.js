@@ -8,7 +8,7 @@ if (workbox) {
   // Precache essential files
   workbox.precaching.precacheAndRoute([
     {url: '/index.html', revision: '1'},  // HTML page
-    {url: '/styles.css', revision: '1'},  // CSS file
+    {url: '/style.css', revision: '1'},  // CSS file
     {url: '/app.js', revision: '1'},  // JS file
     {url: '/offline.html', revision: '1'},  // fallback file
   ]);
@@ -19,7 +19,7 @@ if (workbox) {
     new workbox.strategies.NetworkFirst({
       cacheName: 'weather-api-cache',  
       plugins: [
-        new workbox.expiration.Plugin({
+        new workbox.expiration.ExpirationPlugin({
           maxAgeSeconds: 24 * 60 * 60,  // Cache expiration time (24 hours)
           maxEntries: 10,  // Max number of entries in the cache
         }),
@@ -56,7 +56,7 @@ workbox.routing.registerRoute(
     new workbox.strategies.CacheFirst({
       cacheName: 'static-cache',  // Static resources cache
       plugins: [
-        new workbox.expiration.Plugin({
+        new workbox.expiration.ExpirationPlugin({
           maxAgeSeconds: 7 * 24 * 60 * 60,  // Cache static resources for 7 days
         }),
       ],

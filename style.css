@@ -1,4 +1,4 @@
-below is the styles.ss file   /* Base styles */
+/* Base styles */
 * {
     margin: 0;
     padding: 0;
@@ -18,7 +18,7 @@ body {
     color: white;
     padding: 1rem;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
@@ -27,13 +27,15 @@ body {
     font-size: 1.5rem;
 }
 
-#refresh {
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.5rem;
-    cursor: pointer;
+
+.header img {
+    width: 55px;
+    height: 55px;
+    border: #ffff 1px solid;
+    margin-right: 4px;
 }
+
+
 
 /* Main content styles */
 .main {
@@ -74,13 +76,17 @@ body {
     font-size: 1rem;
 }
 
-.error{
+.error, .loading {
     text-align: center;
     font-weight: bold;
-    color: #d32f2f;
     font-size: 14px;
     margin-top: 10px;
-    display: none   ;
+    display: none;;
+}
+
+.error-message {
+    color: #d32f2f;
+
 }
 /* Weather display styles */
 .weather-container {

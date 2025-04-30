@@ -1,17 +1,24 @@
-const BASE_URL = `https://api.openweathermap.org/data/2.5/weather?&appid=${CONFIG.WEATHER_API_KEY}&units=metric&q=`
+import { CONFIG } from './config.js';
+const BASE_URL = `https://api.openweathermap.org/data/2.5/weather?&appid=${CONFIG.WEATHER_API_KEY}&units=metric&q=`;
 
 const cityName = document.getElementById('location-input');
 const searchButton = document.getElementById('search-btn');
 const weatherIcon = document.getElementById('weather-icon');
+// const loadingText = document.getElementById('loading-text');
 
 async function checkWeather(city){
     const response = await fetch(BASE_URL + city);
+    document.getElementsByClassName('loading')[0].style.display = 'block';
 
+    // loadingText.style.display = 'block';
     if (response.status == 404) {
         document.getElementsByClassName('error')[0].style.display = 'block';
+        document.getElementsByClassName('error')[0].innerHTML = "City not found! Please enter a valid city name.";
+        loadingText.style.display = 'none'
         document.getElementById('weather-container').style.display = 'none';       
     } else {
     const data = await response.json();
+    // loadingText.style.display = 'none'
     document.getElementById('weather-container').style.display = 'block';
     document.getElementsByClassName('error')[0].style.display = 'none';
   
@@ -57,7 +64,7 @@ cityName.addEventListener('keypress', (e) => {
   });
 
 searchButton.addEventListener('click', ()=>{
-    checkWeather(cityName.value );
+    checkWeather(cityName.value);
   });
   
 
