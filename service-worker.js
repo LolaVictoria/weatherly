@@ -4,7 +4,6 @@ workbox.core.clientsClaim();
  // Check if Workbox is loaded
 if (workbox) {
   console.log(`Yay! Workbox is loaded 🎉`);
-
   // Precache essential files
   workbox.precaching.precacheAndRoute([
     {url: '/index.html', revision: '3'},

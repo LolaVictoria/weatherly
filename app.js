@@ -4,15 +4,20 @@ const BASE_URL = `https://api.openweathermap.org/data/2.5/weather?&appid=${CONFI
 const cityName = document.getElementById('location-input');
 const searchButton = document.getElementById('search-btn');
 const weatherIcon = document.getElementById('weather-icon');
+const locationBtn = document.getElementById('locationBtn');
+
+const weatherInfo = document.getElementById('weatherInfo');
+
+
 
 async function checkWeather(city){
-    if(city.length == 0) {
-        document.getElementsByClassName('error')[0].style.display = 'block';
-        document.getElementsByClassName('error')[0].innerHTML = "Please enter a city name!";
-        document.getElementsByClassName('error')[0].style.color = 'red';
-        document.getElementById('weather-container').style.display = 'none'; 
-        return;
-    }
+    // if(city.length == 0) {
+    //     document.getElementsByClassName('error')[0].style.display = 'block';
+    //     document.getElementsByClassName('error')[0].innerHTML = "Please enter a city name!";
+    //     document.getElementsByClassName('error')[0].style.color = 'red';
+    //     document.getElementById('weather-container').style.display = 'none'; 
+    //     return;
+    // }
     const response = await fetch(BASE_URL + city);
     document.getElementsByClassName('error')[0].style.display = 'block';
     document.getElementsByClassName('error')[0].innerHTML = "Wait a sec, your location's data will be displayed soon!";
@@ -28,6 +33,8 @@ async function checkWeather(city){
     document.getElementsByClassName('error')[0].style.display = 'none';
   
     console.log(data)
+    
+    localStorage.setItem('lastCity', city);
 
     document.querySelector('#city').innerHTML = data.name;
     document.querySelector("#temperature").innerHTML = Math.round(data.main.temp) + "°C";
@@ -39,7 +46,7 @@ async function checkWeather(city){
     document.getElementById('weather-icon').src = "img/" + data.weather[0].icon + ".png";
     const weatherCondition = data.weather[0].main;
 
-    switch (weatherCondition) {
+switch (weatherCondition) {
     case "Clear":
         weatherIcon.src = "images/weather-icons/clear.png";
         break;
@@ -62,6 +69,66 @@ async function checkWeather(city){
 
     }
 }
+// Fetch 5-day forecast by coordinates
+function get5DayForecast(lat, lon) {
+    fetch(
+      `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${CONFIG.WEATHER_API_KEY}&units=metric`
+    )
+      .then(res => res.json())
+      .then(data => {
+        display5DayForecast(data.list);
+      })
+      .catch(() => {
+        weatherInfo.innerHTML = 'Error fetching forecast data.';
+      });
+  }
+
+  // display 5-day forecast by coordinates
+  function display5DayForecast(forecast) {
+    let forecastHTML = '<h3>5-Day Forecast:</h3><div class="forecast-container">';
+    
+    forecast.forEach((entry, index) => {
+      if (index % 8 === 0) {  // Display forecast for every 24 hours (8 measurements per day)
+        forecastHTML += `
+          <div class="forecast-item">
+            <p><strong>${new Date(entry.dt * 1000).toLocaleDateString()}</strong></p>
+            <p><img src="https://openweathermap.org/img/wn/${entry.weather[0].icon}.png" alt="weather-icon" /></p>
+            <p><strong>Temp:</strong> ${entry.main.temp} °C</p>
+            <p><strong>Weather:</strong> ${entry.weather[0].description}</p>
+          </div>
+        `;
+      }
+    });
+  
+    forecastHTML += '</div>';
+    weatherInfo.innerHTML += forecastHTML;
+  }  
+
+// Fetch weather by coordinates
+function getWeatherByCoords(lat, lon) {
+    fetch(
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${CONFIG.WEATHER_API_KEY}&units=metric`
+    )
+      .then(res => res.json())
+      .then(data => {
+        displayWeather(data);
+        get5DayForecast(lat, lon);
+      })
+      .catch(() => {
+        weatherInfo.innerHTML = 'Error fetching data.';
+      });
+  }
+  
+  // Display current weather data
+  function displayWeather(data) {
+    weatherInfo.innerHTML = `
+      <h2>${data.name}, ${data.sys.country}</h2>
+      <p><strong>Temperature:</strong> ${data.main.temp} °C</p>
+      <p><strong>Weather:</strong> ${data.weather[0].description}</p>
+      <p><strong>Humidity:</strong> ${data.main.humidity}%</p>
+      <p><strong>Wind Speed:</strong> ${data.wind.speed} m/s</p>
+    `;
+  }
 
 
 cityName.addEventListener('keypress', (e) => {
@@ -71,7 +138,46 @@ cityName.addEventListener('keypress', (e) => {
 searchButton.addEventListener('click', ()=>{
     checkWeather(cityName.value);
   });
-  
+
+// Geolocation button
+locationBtn.addEventListener('click', () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        pos => {
+          const { latitude, longitude } = pos.coords;
+          getWeatherByCoords(latitude, longitude);
+        },
+        () => {
+          weatherInfo.innerHTML = 'Unable to retrieve location.';
+        }
+      );
+    } else {
+      weatherInfo.innerHTML = 'Geolocation not supported.';
+    }
+  });
+
+
+  // Load last searched city
+  window.onload = () => {
+    const lastCity = localStorage.getItem('lastCity');
+    if (lastCity) {
+    checkWeather(lastCity);
+    }
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          pos => {
+            const { latitude, longitude } = pos.coords;
+            getWeatherByCoords(latitude, longitude);
+          },
+          () => {
+            weatherInfo.innerHTML = 'Unable to retrieve location.';
+          }
+        );
+      } else {
+        weatherInfo.innerHTML = 'Geolocation not supported.';
+      }
+  };
 
   //service workers
   if('serviceWorker' in navigator){

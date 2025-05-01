@@ -40,7 +40,7 @@ body {
 /* Main content styles */
 .main {
     padding: 1rem;
-    max-width: 600px;
+    max-width: auto;
     margin: 0 auto;
 }
 
@@ -64,6 +64,7 @@ body {
     border: 1px solid #ddd;
     border-radius: 4px 0 0 4px;
     font-size: 1rem;
+    max-width: 240px;
 }
 
 #search-btn {
@@ -98,17 +99,19 @@ body {
     height: 100px;
   }
   
-
+.current-weather{
+    margin-bottom: 1rem;
+}
 .location-info {
     margin-bottom: 1rem;
 }
 
-.location-info h2 {
+.location-info h2, .current-weather h3 {
     font-size: 1.8rem;
     margin-bottom: 0.25rem;
 }
 
-.location-info p {
+.location-info p, .current-weather p {
     color: #666;
 }
 
@@ -215,6 +218,13 @@ body {
     color: white;
     border: 1px solid white;
 }
+
+.weather-info {
+    margin-top: 1rem;
+    font-size: 1.1rem;
+  }
+
+  
 
 /* Responsive styles */
 @media (max-width: 480px) {
