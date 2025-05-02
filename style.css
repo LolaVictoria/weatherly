@@ -67,7 +67,7 @@ body {
     max-width: 240px;
 }
 
-#search-btn {
+#search-btn, #locationBtn {
     background-color: #2196f3;
     color: white;
     border: none;
@@ -75,6 +75,7 @@ body {
     border-radius: 0 4px 4px 0;
     cursor: pointer;
     font-size: 1rem;
+    margin-right: 2.5px;
 }
 
 .error, .loading {
@@ -100,32 +101,38 @@ body {
   }
   
 .current-weather{
-    margin-bottom: 1rem;
-}
-.location-info {
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
+    display: flex;
+    justify-content: center;
 }
 
-.location-info h2, .current-weather h3 {
+.location-weather{
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+
+#weather-icon {
+    width: 80px;
+    height: 80px;
+    margin-right: 1rem;
+}
+
+.location-info {
+    margin-bottom: 1rem;
+    display: flex;
+    justify-content: center;
+}
+
+.location-info h2, .current-weather h3, .weather-container h3, .forecast h3, .location-weather h3 {
     font-size: 1.8rem;
     margin-bottom: 0.25rem;
 }
 
 .location-info p, .current-weather p {
     color: #666;
-}
-
-.current-weather {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 1.5rem;
-}
-
-#weather-icon {
-    width: 80px;
-    height: 80px;
-    margin-right: 1rem;
 }
 
 .temperature-container h3 {
@@ -174,7 +181,7 @@ body {
     text-align: center;
     margin-top: 1rem;
     display: none;
-}
+} 
 
 .offline-message {
     background-color: #ffab91;
@@ -186,50 +193,29 @@ body {
     display: none;
 }
 
-/* Install banner styles */
-.install-banner {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    background-color: #2196f3;
-    color: white;
-    padding: 1rem;
-    display: none;
-    justify-content: space-between;
-    align-items: center;
+
+/* 5 days forecast weather */
+.forecast {
+    margin-top: 3rem;
 }
-
-.install-banner button {
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 4px;
-    margin-left: 0.5rem;
-    cursor: pointer;
+.forecast-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+    row-gap: 3rem;
+    place-items: center;
 }
-
-#install-btn {
-    background-color: white;
-    color: #2196f3;
-}
-
-#dismiss-btn {
-    background-color: transparent;
-    color: white;
-    border: 1px solid white;
-}
-
-.weather-info {
-    margin-top: 1rem;
-    font-size: 1.1rem;
-  }
-
-  
 
 /* Responsive styles */
 @media (max-width: 480px) {
     .header h1 {
         font-size: 1.2rem;
+    }
+
+    .location-container {
+        flex-direction: column;
+        align-items: center;
+        gap: .6rem
     }
     
     .weather-details {
@@ -244,5 +230,9 @@ body {
     #weather-icon {
         margin-right: 0;
         margin-bottom: 1rem;
+    }
+
+    .forecast-container {
+        grid-template-columns: 1fr;
     }
 }
