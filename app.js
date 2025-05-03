@@ -87,7 +87,7 @@ function display5DayForecast(forecast) {
             <p id="date"><strong>${new Date(entry.dt * 1000).toLocaleDateString()}</strong></p>
             <img loading="lazy" id="weather-icon" src="${iconSrc}" alt="${condition} icon">
             <div class="temperature-container">
-              <p id="temperature"><strong>Temp:</strong> ${entry.main.temp} °C</p>
+              <p id="temperature"><strong>Temp:</strong> ${Math.round(entry.main.temp)} °C</p>
               <p id="weather-description"><strong>Weather:</strong> ${entry.weather[0].description}</p>
             </div>
           </div>
@@ -128,7 +128,7 @@ function getWeatherByCoords(lat, lon) {
       <div class="current-weather">
         <img loading="lazy" id="weather-icon" src="${iconSrc}" alt="Weather icon">
         <div class="temperature-container">
-          <h3 id="temperature"> ${data.main.temp} °C</h3>
+          <h3 id="temperature"> ${Math.round(data.main.temp)} °C</h3>
           <p id="weather-description">${data.weather[0].description}</p>
         </div>
       </div>
