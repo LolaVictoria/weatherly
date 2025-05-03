@@ -169,11 +169,16 @@ window.onload = () => {
         getWeatherByCoords(latitude, longitude);
       },
       () => {
-        if (lastCity) checkWeather(lastCity);
-        else weatherInfo.innerHTML = 'Unable to retrieve location.';
+        // Geolocation failed, fallback to last searched city
+        if (lastCity) {
+          checkWeather(lastCity);
+        } else {
+          weatherInfo.innerHTML = 'Unable to retrieve location.';
+        }
       }
     );
   } else {
+    // Even if user declines geolocation, show last searched city if available
     if (lastCity) {
       checkWeather(lastCity);
     } else {
@@ -181,6 +186,7 @@ window.onload = () => {
     }
   }
 };
+
 
 // Service worker
 if('serviceWorker' in navigator){
