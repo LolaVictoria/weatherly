@@ -66,7 +66,9 @@ function get5DayForecast(lat, lon) {
     )
       .then(res => res.json())
       .then(data => {
-        display5DayForecast(data.list);
+        requestIdleCallback(() => {
+          setTimeout(() => display5DayForecast(data.list), 0);
+        });        
       })
       .catch(() => {
         weatherInfo.innerHTML = 'Error fetching forecast data.';
@@ -74,30 +76,66 @@ function get5DayForecast(lat, lon) {
 }
 
   // display 5-day forecast by coordinates
-function display5DayForecast(forecast) {
-    let forecastHTML = '<div class="forecast"><h3>Your location&apos;s next 5 days forecast:</h3><div class="forecast-container">';
-        
-    
+  function display5DayForecast(forecast) {
+    const fragment = document.createDocumentFragment(); // For efficient DOM insertion
+  
+    // Create wrapper divs
+    const forecastWrapper = document.createElement('div');
+    forecastWrapper.className = 'forecast';
+  
+    const heading = document.createElement('h3');
+    heading.innerHTML = "Your location's next 5 days forecast:";
+  
+    const container = document.createElement('div');
+    container.className = 'forecast-container';
+  
     forecast.forEach((entry, index) => {
-      if (index % 8 === 0) {  
+      if (index % 8 === 0) {
         const condition = entry.weather[0].main;
-      const iconSrc = getWeatherIcon(condition);
-        forecastHTML += `
-          <div class="forecast-item">
-            <p id="date"><strong>${new Date(entry.dt * 1000).toLocaleDateString()}</strong></p>
-            <img loading="lazy" id="weather-icon" src="${iconSrc}" alt="${condition} icon">
-            <div class="temperature-container">
-              <p id="temperature"><strong>Temp:</strong> ${Math.round(entry.main.temp)} °C</p>
-              <p id="weather-description"><strong>Weather:</strong> ${entry.weather[0].description}</p>
-            </div>
-          </div>
-        `;
+        const iconSrc = getWeatherIcon(condition);
+  
+        const forecastItem = document.createElement('div');
+        forecastItem.className = 'forecast-item';
+  
+        const date = document.createElement('p');
+        date.id = 'date';
+        date.innerHTML = `<strong>${new Date(entry.dt * 1000).toLocaleDateString()}</strong>`;
+  
+        const icon = document.createElement('img');
+        icon.loading = 'lazy';
+        icon.id = 'weather-icon';
+        icon.src = iconSrc;
+        icon.alt = `${condition} icon`;
+  
+        const tempContainer = document.createElement('div');
+        tempContainer.className = 'temperature-container';
+  
+        const temp = document.createElement('p');
+        temp.id = 'temperature';
+        temp.innerHTML = `<strong>Temp:</strong> ${Math.round(entry.main.temp)} °C`;
+  
+        const description = document.createElement('p');
+        description.id = 'weather-description';
+        description.innerHTML = `<strong>Weather:</strong> ${entry.weather[0].description}`;
+  
+        tempContainer.appendChild(temp);
+        tempContainer.appendChild(description);
+  
+        forecastItem.appendChild(date);
+        forecastItem.appendChild(icon);
+        forecastItem.appendChild(tempContainer);
+  
+        container.appendChild(forecastItem);
       }
     });
-    
-    forecastHTML += '</div></div>';
-    weatherInfo.innerHTML += forecastHTML;
-  }  
+  
+    forecastWrapper.appendChild(heading);
+    forecastWrapper.appendChild(container);
+    fragment.appendChild(forecastWrapper);
+  
+    weatherInfo.appendChild(fragment); // ✅ DOM updated only once
+  }
+  
 
 // Fetch weather by coordinates
 function getWeatherByCoords(lat, lon) {
