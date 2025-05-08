@@ -6,10 +6,10 @@ if (workbox) {
   console.log(`Yay! Workbox is loaded 🎉`);
   // Precache essential files
   workbox.precaching.precacheAndRoute([
-    {url: '/index.html', revision: '3'},
-    {url: '/style.css', revision: '11'},  // CSS file
-    {url: '/app.js', revision: '6'},  // JS file
-    { url: '/images/logo.png', revision: '3' },
+    {url: '/index.html', revision: '1'},
+    {url: '/style.css', revision: '4'},  // CSS file
+    {url: '/app.js', revision: '7'},  // JS file
+    { url: '/images/logo.png', revision: '5' },
     {url: '/offline.html', revision: '1'},  // fallback file
   ]);
 

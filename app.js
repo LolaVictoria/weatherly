@@ -244,11 +244,22 @@ locationBtn.addEventListener('click', () => {
   //service workers
   if('serviceWorker' in navigator){
     window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./service-worker.js')
-    .then(console.log('Service worker registered'))
-    .catch(error => console.log('Service worker not registered', error));
+      navigator.serviceWorker.register('/service-worker.js').then(reg => {
+        reg.onupdatefound = () => {
+          const newWorker = reg.installing;
+          newWorker.onstatechange = () => {
+            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+              // New content available, force reload
+              window.location.reload();
+            }
+          };
+        };
+      });
+      
     })
   } 
+
+  
 
   let deferredPrompt;
 
