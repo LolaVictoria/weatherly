@@ -78,8 +78,9 @@ function get5DayForecast(lat, lon) {
 
   // display 5-day forecast by coordinates
   function display5DayForecast(forecast) {
-    const fragment = document.createDocumentFragment(); // For efficient DOM insertion
-  
+    const fragment = document.createDocumentFragment(); 
+    weatherInfo.innerHTML = ''; 
+
     // Create wrapper divs
     const forecastWrapper = document.createElement('div');
     forecastWrapper.className = 'forecast';
@@ -91,7 +92,10 @@ function get5DayForecast(lat, lon) {
     container.className = 'forecast-container';
   
     forecast.forEach((entry, index) => {
-      if (index % 8 === 0) {
+      const entryDate = new Date(entry.dt * 1000).getDate();
+      const todayDate = new Date().getDate();
+      if (entryDate !== todayDate && index % 8 === 0) {
+    
         const condition = entry.weather[0].main;
         const iconSrc = getWeatherIcon(condition);
   
@@ -134,7 +138,7 @@ function get5DayForecast(lat, lon) {
     forecastWrapper.appendChild(container);
     fragment.appendChild(forecastWrapper);
   
-    weatherInfo.appendChild(fragment); // ✅ DOM updated only once
+    weatherInfo.appendChild(fragment); 
   }
   
 

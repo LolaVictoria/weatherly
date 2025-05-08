@@ -143,7 +143,15 @@ body {
 
 .location-info p, .current-weather p {
     color: #666;
-    font-size: 1rem;
+    font-size: 1.4rem;
+}
+
+.temperature-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
 }
 
 .temperature-container h3 {
