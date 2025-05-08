@@ -34,7 +34,22 @@
               "purpose": "maskable"
             }
           ]
-        ]
+        ],
+    "screenshots": [
+        {
+          "src": "/screenshots/home.png",
+          "sizes": "540x720",
+          "type": "image/png",
+          "form_factor": "wide"
+        },
+        {
+          "src": "/screenshots/mobile.png",
+          "sizes": "360x640",
+          "type": "image/png",
+          "form_factor": "narrow"
+        }
+      ]
+
     } 
           
          

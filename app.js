@@ -239,8 +239,41 @@ locationBtn.addEventListener('click', () => {
   //service workers
   if('serviceWorker' in navigator){
     window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./service-worker.ajs')
+    navigator.serviceWorker.register('./service-worker.js')
     .then(console.log('Service worker registered'))
     .catch(error => console.log('Service worker not registered', error));
     })
   } 
+
+  let deferredPrompt;
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    // Prevent the default mini-infobar prompt
+    e.preventDefault();
+    // Save the event so it can be triggered later
+    deferredPrompt = e;
+  
+    // Optionally, show a custom install button to the user
+    const installBtn = document.getElementById('installBtn');
+    installBtn.style.display = 'block';
+  
+    installBtn.addEventListener('click', () => {
+      // Show the install prompt
+      deferredPrompt.prompt();
+  
+      // Wait for the user's response
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === 'accepted') {
+          console.log('User accepted the install prompt');
+        } else {
+          console.log('User dismissed the install prompt');
+        }
+        deferredPrompt = null;
+      });
+    });
+  });
+
+  window.addEventListener('appinstalled', () => {
+    console.log('PWA was installed');
+  });
+  
