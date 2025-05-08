@@ -7,7 +7,7 @@ if (workbox) {
   // Precache essential files
   workbox.precaching.precacheAndRoute([
     {url: '/index.html', revision: '3'},
-    {url: '/style.css', revision: '4'},  // CSS file
+    {url: '/style.css', revision: '11'},  // CSS file
     {url: '/app.js', revision: '6'},  // JS file
     { url: '/images/logo.png', revision: '3' },
     {url: '/offline.html', revision: '1'},  // fallback file

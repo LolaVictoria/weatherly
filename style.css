@@ -31,6 +31,7 @@ body {
     height: 55px;
     border: #ffff 1px solid;
     margin-right: 4px;
+    border-radius: 10%;
 }
 
 
@@ -52,6 +53,7 @@ body {
 .location-container {
     display: flex;
     margin-bottom: 1.5rem;
+    justify-content: center;
 }
 
 #location-input {
@@ -62,6 +64,14 @@ body {
     font-size: 1rem;
     max-width: 240px;
 }
+
+#location-input:focus {
+    outline: none;
+    border-color: #2196f3;
+}
+#location-input::placeholder {
+    color: #999;
+}   
 
 #search-btn, #locationBtn {
     background-color: #2196f3;
@@ -119,16 +129,21 @@ body {
 .location-info {
     margin-bottom: 1rem;
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
 }
 
-.location-info h2, .current-weather h3, .weather-container h3, .location-weather h3 {
+.location-info h2,  .current-weather h3, .weather-container h3, .location-weather h3 {
     font-size: 1.8rem;
     margin-bottom: 0.25rem;
 }
 
+
+
 .location-info p, .current-weather p {
     color: #666;
+    font-size: 1rem;
 }
 
 .temperature-container h3 {
@@ -191,6 +206,19 @@ body {
 
 
 /* 5 days forecast weather */
+.forecast-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.forecast-item {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 1rem;
+    text-align: center;
+}
 
 /* Responsive styles */
 @media (max-width: 480px) {
@@ -204,13 +232,15 @@ body {
         gap: .6rem
     }
     
-    .weather-details {
-        flex-direction: column;
-        gap: 1rem;
-    }
     
     .current-weather {
         flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .weather-container h3 {
+        font-size: 1.5rem;
     }
     
     #weather-icon {

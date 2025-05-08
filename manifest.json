@@ -1,6 +1,6 @@
 {
-    "name": "Weather PWA",
-    "short_name": "Weather App",
+    "name": "Weatherly",
+    "short_name": "Weatherly",
     "description": "A simple weather Progressive Web App",
     "start_url": "/index.html",
     "display": "standalone",
@@ -37,13 +37,13 @@
         ],
     "screenshots": [
         {
-          "src": "/screenshots/home.png",
+          "src": "/screenshots/desktop-screenshot.png",
           "sizes": "540x720",
           "type": "image/png",
           "form_factor": "wide"
         },
         {
-          "src": "/screenshots/mobile.png",
+          "src": "images/assets/manifest-icon-512.maskable.png",
           "sizes": "360x640",
           "type": "image/png",
           "form_factor": "narrow"

@@ -49,6 +49,7 @@ async function checkWeather(city){
       document.getElementsByClassName('error')[0].style.display = 'none';
       localStorage.setItem('lastCity', city);
       document.querySelector('#city').innerHTML = data.name;
+      document.getElementById('date').innerHTML = new Date(data.dt * 1000).toLocaleDateString();
       document.querySelector("#temperature").innerHTML = Math.round(data.main.temp) + "°C";
       document.querySelector("#humidity").innerHTML = data.main.humidity + "%";
       document.querySelector("#wind").innerHTML = data.wind.speed + "km/h";
