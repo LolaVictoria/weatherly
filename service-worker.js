@@ -1,48 +1,44 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.5.4/workbox-sw.js');
+
+// Force waiting service worker to become active
 workbox.core.skipWaiting();
 workbox.core.clientsClaim();
- // Check if Workbox is loaded
+
 if (workbox) {
-  console.log(`Yay! Workbox is loaded 🎉`);
-  // Precache essential files
+  console.log('✅ Workbox loaded successfully');
+
+  // Precache critical files with revisions (update revisions when files change)
   workbox.precaching.precacheAndRoute([
-    {url: '/index.html', revision: '1'},
-    {url: '/style.css', revision: '4'},  // CSS file
-    {url: '/app.js', revision: '7'},  // JS file
-    { url: '/images/logo.png', revision: '5' },
-    {url: '/offline.html', revision: '1'},  // fallback file
+    { url: '/index.html', revision: '3' },
+    { url: '/style.css', revision: '11' },
+    { url: '/app.js', revision: '6' },
+    { url: '/images/logo.png', revision: '3' },
+    { url: '/offline.html', revision: '1' },
   ]);
 
-  // Serve HTML with network-first or stale-while-revalidate - This ensures you get updated HTML on refresh.
-// workbox.routing.registerRoute(
-//   ({ request }) => request.destination === 'document',
-//   new workbox.strategies.StaleWhileRevalidate()
-// );
-
-  // Cache weather API responses (Caching API Requests)
+  // Cache API requests (e.g. OpenWeatherMap)
   workbox.routing.registerRoute(
-    ({url}) => url.origin === 'https://api.openweathermap.org',  
+    ({ url }) => url.origin === 'https://api.openweathermap.org',
     new workbox.strategies.NetworkFirst({
-      cacheName: 'weather-api-cache',  
+      cacheName: 'weather-api-cache',
       plugins: [
         new workbox.expiration.ExpirationPlugin({
-          maxAgeSeconds: 24 * 60 * 60,  // Cache expiration time (24 hours)
-          maxEntries: 10,  // Max number of entries in the cache
+          maxAgeSeconds: 24 * 60 * 60,
+          maxEntries: 10,
         }),
       ],
     })
   );
 
-  // Dynamic Caching: Cache other requests at runtime (What to Cache & When to Cache?)
+  // Cache images
   workbox.routing.registerRoute(
-    ({request}) => request.destination === 'image',  // Cache images
+    ({ request }) => request.destination === 'image',
     new workbox.strategies.StaleWhileRevalidate({
-      cacheName: 'image-cache',  // Name of the cache
+      cacheName: 'image-cache',
     })
   );
 
-  
-  //Precache the offline fallback page along with core files
+  // Serve HTML pages with Network First and offline fallback
   workbox.routing.registerRoute(
     ({ request }) => request.mode === 'navigate',
     async ({ event }) => {
@@ -54,40 +50,44 @@ if (workbox) {
         return caches.match('/offline.html');
       }
     }
-);
+  );
 
-// Serve Cached Resources (How to Serve Cached Resources?)
-workbox.routing.registerRoute(
-    ({url}) => url.origin === self.location.origin,  // Cache other static resources
+  // Cache other same-origin static resources (scripts, styles, etc.)
+  workbox.routing.registerRoute(
+    ({ url }) => url.origin === self.location.origin,
     new workbox.strategies.CacheFirst({
-      cacheName: 'static-cache',  // Static resources cache
+      cacheName: 'static-resources',
       plugins: [
         new workbox.expiration.ExpirationPlugin({
-          maxAgeSeconds: 7 * 24 * 60 * 60,  // Cache static resources for 7 days
+          maxAgeSeconds: 7 * 24 * 60 * 60,
         }),
       ],
     })
   );
-
+  
 } else {
-  console.log(`Boo! Workbox didn't load 😬`);
-
-
-  
-
-
-  //clean up old caches
-  self.addEventListener('activate', event => {
-    const keepList = [workbox.core.cacheNames.precache];
-    event.waitUntil(
-      caches.keys().then(keys =>
-        Promise.all(keys.map(key => {
-          if (!keepList.includes(key)) {
-            return caches.delete(key);
-          }
-        }))
-      )
-    );
-  });
-  
+  console.log('❌ Workbox failed to load');
 }
+
+// Clean up old/unused caches during activation
+self.addEventListener('activate', event => {
+  const currentCaches = [
+    workbox.core.cacheNames.precache,
+    'weather-api-cache',
+    'image-cache',
+    'pages-cache',
+    'static-resources'
+  ];
+
+  event.waitUntil(
+    caches.keys().then(cacheNames => {
+      return Promise.all(
+        cacheNames.map(cacheName => {
+          if (!currentCaches.includes(cacheName)) {
+            return caches.delete(cacheName);
+          }
+        })
+      );
+    })
+  );
+});

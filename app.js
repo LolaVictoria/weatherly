@@ -249,7 +249,6 @@ locationBtn.addEventListener('click', () => {
           const newWorker = reg.installing;
           newWorker.onstatechange = () => {
             if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
-              // New content available, force reload
               window.location.reload();
             }
           };
