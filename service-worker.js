@@ -13,6 +13,7 @@ if (workbox) {
     { url: '/style.css', revision: '11' },
     { url: '/app.js', revision: '6' },
     { url: '/images/logo.png', revision: '3' },
+    { url: '/manifest.json', revision: '5' },
     { url: '/offline.html', revision: '1' },
   ]);
 
