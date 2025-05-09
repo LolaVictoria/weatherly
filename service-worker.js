@@ -11,13 +11,13 @@ if (workbox) {
   workbox.precaching.precacheAndRoute([
     { url: '/index.html', revision: '3' },
     { url: '/style.css', revision: '11' },
-    { url: '/app.js', revision: '6' },
+    { url: '/app.js', revision: '7' },
     { url: '/images/logo.png', revision: '3' },
     { url: '/manifest.json', revision: '5' },
     { url: '/offline.html', revision: '1' },
   ]);
 
-  // Cache API requests (e.g. OpenWeatherMap)
+  // Cache API requests 
   workbox.routing.registerRoute(
     ({ url }) => url.origin === 'https://api.openweathermap.org',
     new workbox.strategies.NetworkFirst({

@@ -17,6 +17,7 @@ function getWeatherIcon(condition) {
     case "Drizzle":
       return "images/weather-icons/drizzle.png";
     case "Rain":
+      return "images/weather-icons/drizzle.png";
     case "Mist":
       return "images/weather-icons/mist.png";
     case "Snow":
@@ -27,13 +28,13 @@ function getWeatherIcon(condition) {
 }
 
 async function checkWeather(city){
-    // if(city.length == 0) {
-    //     document.getElementsByClassName('error')[0].style.display = 'block';
-    //     document.getElementsByClassName('error')[0].innerHTML = "Please enter a city name!";
-    //     document.getElementsByClassName('error')[0].style.color = 'red';
-    //     document.getElementById('weather-container').style.display = 'none'; 
-    //     return;
-    // }
+    if(city.length == 0) {
+        document.getElementsByClassName('error')[0].style.display = 'block';
+        document.getElementsByClassName('error')[0].innerHTML = "Please enter a city name!";
+        document.getElementsByClassName('error')[0].style.color = 'red';
+        document.getElementById('weather-container').style.display = 'none'; 
+        return;
+    }
     const response = await fetch(BASE_URL + city);
     document.getElementsByClassName('error')[0].style.display = 'block';
     document.getElementsByClassName('error')[0].innerHTML = "Wait a sec, your location's data will be displayed soon!";
@@ -79,7 +80,6 @@ function get5DayForecast(lat, lon) {
   // display 5-day forecast by coordinates
   function display5DayForecast(forecast) {
     const fragment = document.createDocumentFragment(); 
-    weatherInfo.innerHTML = ''; 
 
     // Create wrapper divs
     const forecastWrapper = document.createElement('div');
@@ -141,26 +141,7 @@ function get5DayForecast(lat, lon) {
     weatherInfo.appendChild(fragment); 
   }
   
-
-// Fetch weather by coordinates
-function getWeatherByCoords(lat, lon) {
-    fetch(
-      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${CONFIG.WEATHER_API_KEY}&units=metric`
-    )
-      .then(res => res.json())
-      .then(data => {
-        displayWeather(data);
-        get5DayForecast(lat, lon);
-      })
-      .catch(() => {
-        weatherInfo.innerHTML = 'Error fetching data.';
-      });
-      
-  }
-
- 
-  
-  // Display current weather data
+ // Display current weather data
   function displayWeather(data) {
     const weatherCondition = data.weather[0].main;
     const iconSrc = getWeatherIcon(weatherCondition);
@@ -190,6 +171,26 @@ function getWeatherByCoords(lat, lon) {
       </div>
     `;
   }
+
+// Fetch weather by coordinates
+function getWeatherByCoords(lat, lon) {
+    fetch(
+      `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${CONFIG.WEATHER_API_KEY}&units=metric`
+    )
+      .then(res => res.json())
+      .then(data => {
+        displayWeather(data);
+        get5DayForecast(lat, lon);
+      })
+      .catch(() => {
+        weatherInfo.innerHTML = 'Error fetching data.';
+      });
+      
+  }
+
+ 
+  
+ 
 
 // Event listeners for search button and input field
 cityName.addEventListener('keypress', (e) => {
