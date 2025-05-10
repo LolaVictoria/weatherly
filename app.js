@@ -26,8 +26,8 @@ function getWeatherIcon(condition) {
       return "images/weather-icons/default.png";
   }
 }
-
-async function checkWeather(city){
+//Search for weather by city name
+async function checkWeatherBySearch(city){
     if(city.length == 0) {
         document.getElementsByClassName('error')[0].style.display = 'block';
         document.getElementsByClassName('error')[0].innerHTML = "Please enter a city name!";
@@ -60,28 +60,9 @@ async function checkWeather(city){
     }
 }
 
-
-// Fetch 5-day forecast by coordinates
-function get5DayForecast(lat, lon) {
-    fetch(
-      `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${CONFIG.WEATHER_API_KEY}&units=metric`
-    )
-      .then(res => res.json())
-      .then(data => {
-        requestIdleCallback(() => {
-          setTimeout(() => display5DayForecast(data.list), 0);
-        });        
-      })
-      .catch(() => {
-        weatherInfo.innerHTML = 'Error fetching forecast data.';
-    });
-}
-
-  // display 5-day forecast by coordinates
-  function display5DayForecast(forecast) {
-    const fragment = document.createDocumentFragment(); 
-
-    // Create wrapper divs
+ // display next 5-day forecast by coordinates
+function display5DaysForecast(forecast) {
+   const fragment = document.createDocumentFragment(); 
     const forecastWrapper = document.createElement('div');
     forecastWrapper.className = 'forecast';
   
@@ -125,11 +106,9 @@ function get5DayForecast(lat, lon) {
   
         tempContainer.appendChild(temp);
         tempContainer.appendChild(description);
-  
         forecastItem.appendChild(date);
         forecastItem.appendChild(icon);
         forecastItem.appendChild(tempContainer);
-  
         container.appendChild(forecastItem);
       }
     });
@@ -137,12 +116,27 @@ function get5DayForecast(lat, lon) {
     forecastWrapper.appendChild(heading);
     forecastWrapper.appendChild(container);
     fragment.appendChild(forecastWrapper);
-  
     weatherInfo.appendChild(fragment); 
-  }
+}
+
+// Fetch next 5-day forecast by coordinates
+function get5DaysForecast(lat, lon) {
+    fetch(
+      `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${CONFIG.WEATHER_API_KEY}&units=metric`
+    )
+      .then(res => res.json())
+      .then(data => {
+        requestIdleCallback(() => {
+          setTimeout(() => display5DaysForecast(data.list), 0);
+        });        
+      })
+      .catch(() => {
+        weatherInfo.innerHTML = 'Error fetching forecast data.';
+    });
+}
   
  // Display current weather data
-  function displayWeather(data) {
+function displayUserWeather(data) {
     const weatherCondition = data.weather[0].main;
     const iconSrc = getWeatherIcon(weatherCondition);
 
@@ -179,28 +173,23 @@ function getWeatherByCoords(lat, lon) {
     )
       .then(res => res.json())
       .then(data => {
-        displayWeather(data);
-        get5DayForecast(lat, lon);
+        displayUserWeather(data);
+        get5DaysForecast(lat, lon);
       })
       .catch(() => {
         weatherInfo.innerHTML = 'Error fetching data.';
       });
-      
   }
-
- 
-  
- 
 
 // Event listeners for search button and input field
 cityName.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter') checkWeather(cityName.value);
-  });
+    if (e.key === 'Enter') checkWeatherBySearch(cityName.value);
+});
 
   // Search button click event
 searchButton.addEventListener('click', ()=>{
-    checkWeather(cityName.value);
-  });
+    checkWeatherBySearch(cityName.value);
+});
 
 // Geolocation button
 locationBtn.addEventListener('click', () => {
@@ -217,14 +206,14 @@ locationBtn.addEventListener('click', () => {
     } else {
       weatherInfo.innerHTML = 'Geolocation not supported.';
     }
-  });
+});
 
 
-  // Load last searched city
-  window.onload = () => {
+// Load last searched city
+window.onload = () => {
     const lastCity = localStorage.getItem('lastCity');
     if (lastCity) {
-    checkWeather(lastCity);
+        checkWeatherBySearch(lastCity);
     }
 
     if (navigator.geolocation) {
@@ -240,10 +229,10 @@ locationBtn.addEventListener('click', () => {
       } else {
         weatherInfo.innerHTML = 'Geolocation not supported.';
       }
-  };
+};
 
-  //service workers
-  if('serviceWorker' in navigator){
+//service workers
+if('serviceWorker' in navigator){
     window.addEventListener('load', () => {
       navigator.serviceWorker.register('/service-worker.js').then(reg => {
         reg.onupdatefound = () => {
@@ -257,26 +246,21 @@ locationBtn.addEventListener('click', () => {
       });
       
     })
-  } 
+ } 
 
-  
+let deferredPrompt;
 
-  let deferredPrompt;
-
-  window.addEventListener('beforeinstallprompt', (e) => {
-    // Prevent the default mini-infobar prompt
+window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
-    // Save the event so it can be triggered later
     deferredPrompt = e;
   
-    // Optionally, show a custom install button to the user
+    // show a custom install button to the user
     const installBtn = document.getElementById('installBtn');
     installBtn.style.display = 'block';
   
     installBtn.addEventListener('click', () => {
       // Show the install prompt
       deferredPrompt.prompt();
-  
       // Wait for the user's response
       deferredPrompt.userChoice.then((choiceResult) => {
         if (choiceResult.outcome === 'accepted') {

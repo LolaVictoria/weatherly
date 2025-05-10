@@ -5,15 +5,15 @@ workbox.core.skipWaiting();
 workbox.core.clientsClaim();
 
 if (workbox) {
-  console.log('✅ Workbox loaded successfully');
+  console.log('Workbox loaded successfully');
 
   // Precache critical files with revisions (update revisions when files change)
   workbox.precaching.precacheAndRoute([
-    { url: '/index.html', revision: '3' },
-    { url: '/style.css', revision: '11' },
-    { url: '/app.js', revision: '7' },
+    { url: '/index.html', revision: '6' },
+    { url: '/style.css', revision: '9' },
+    { url: '/app.js', revision: '8' },
     { url: '/images/logo.png', revision: '3' },
-    { url: '/manifest.json', revision: '5' },
+    { url: '/manifest.json', revision: '6' },
     { url: '/offline.html', revision: '1' },
   ]);
 
@@ -39,6 +39,19 @@ if (workbox) {
     })
   );
 
+    // Serve Cached Resources 
+  workbox.routing.registerRoute(
+    ({url}) => url.origin === self.location.origin,  
+    new workbox.strategies.CacheFirst({
+      cacheName: 'static-cache',  
+      plugins: [
+        new workbox.expiration.Plugin({
+          maxAgeSeconds: 7 * 24 * 60 * 60,  // Cache static resources for 7 days
+        }),
+      ],
+    })
+  );
+
   // Serve HTML pages with Network First and offline fallback
   workbox.routing.registerRoute(
     ({ request }) => request.mode === 'navigate',
@@ -53,18 +66,6 @@ if (workbox) {
     }
   );
 
-  // Cache other same-origin static resources (scripts, styles, etc.)
-  workbox.routing.registerRoute(
-    ({ url }) => url.origin === self.location.origin,
-    new workbox.strategies.CacheFirst({
-      cacheName: 'static-resources',
-      plugins: [
-        new workbox.expiration.ExpirationPlugin({
-          maxAgeSeconds: 7 * 24 * 60 * 60,
-        }),
-      ],
-    })
-  );
   
 } else {
   console.log('❌ Workbox failed to load');

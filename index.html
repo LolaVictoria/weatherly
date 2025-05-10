@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
     <!DOCTYPE html>
@@ -6,15 +7,13 @@
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <link rel="icon" href="/images/logo.png" type="image/png">
-        <meta name="description" content="Simple PWA Weather App" />
+        <meta name="description" content="Simple Weather Progressive Web App" />
         <link rel="stylesheet" href="/style.css" />
         <link rel="manifest" href="/manifest.json" />
         <title>Weatherly</title>
-    
         <link rel="apple-touch-icon" href="images/assets/apple-icon-180.png">
-          
-        <meta name="mobile-web-app-capable" content="yes">
         
+        <meta name="mobile-web-app-capable" content="yes">
         <link rel="apple-touch-startup-image" href="images/assets/apple-splash-2048-2732.jpg" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
         <link rel="apple-touch-startup-image" href="images/assets/apple-splash-2732-2048.jpg" media="(device-width: 1024px) and (device-height: 1366px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
         <link rel="apple-touch-startup-image" href="images/assets/apple-splash-1668-2388.jpg" media="(device-width: 834px) and (device-height: 1194px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
@@ -53,9 +52,6 @@
         <link rel="apple-touch-startup-image" href="images/assets/apple-splash-1334-750.jpg" media="(device-width: 375px) and (device-height: 667px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
         <link rel="apple-touch-startup-image" href="images/assets/apple-splash-640-1136.jpg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: portrait)">
         <link rel="apple-touch-startup-image" href="images/assets/apple-splash-1136-640.jpg" media="(device-width: 320px) and (device-height: 568px) and (-webkit-device-pixel-ratio: 2) and (orientation: landscape)">
-        
-        
-  
     </head>
    
     
@@ -72,7 +68,6 @@
                 <button id="search-btn">Search</button>
                 <button id="locationBtn">📍 Use My Location</button>
             </div>
-
              
             <button id="installBtn" style="display:none;">Install App</button>
 
@@ -84,8 +79,6 @@
             <div class="error">
                 <p id="error-message"></p>
             </div>
-           
-            
             
             <div id="weather-container" class="weather-container">
                 <h3>Your last searched location weather:</h3>
@@ -97,8 +90,8 @@
                 <div class="current-weather">
                     <img loading="lazy" id="weather-icon" src="" alt="Weather icon">
                     <div class="temperature-container">
-                        <h3 id="temperature">--°C</h3>
-                        <p id="weather-description">--</p>
+                        <h3 id="temperature"></h3>
+                        <p id="weather-description"></p>
                     </div>
                 </div>
                 
@@ -106,7 +99,7 @@
                     <div class="detail">
                         <img loading="lazy" id="humidity-icon" src="/images/humidity.png" alt="Humidity icon">
                         <span class="label">Humidity</span>
-                        <span id="humidity" class="value">--%</span>
+                        <span id="humidity" class="value"></span>
                     </div>
                     <div class="detail">
                         <img loading="lazy" id="wind-icon" src="/images/wind.png" alt="Wind icon">
@@ -123,16 +116,8 @@
                     
                 </div>
             </div>
-            
-            
-           
         </div>
     </main>
-
-   
     <script type="module" src="/app.js" defer></script>
-   
-      
-    
 </body>
 </html>
