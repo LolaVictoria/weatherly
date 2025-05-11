@@ -72,10 +72,17 @@ function display5DaysForecast(forecast) {
     const container = document.createElement('div');
     container.className = 'forecast-container';
   
-    forecast.forEach((entry, index) => {
-      const entryDate = new Date(entry.dt * 1000).getDate();
-      const todayDate = new Date().getDate();
-      if (entryDate !== todayDate && index % 8 === 0) {
+    const addedDates = new Set();
+    const today = new Date().toDateString();
+
+    forecast.forEach((entry) => {
+      const entryDateObj = new Date(entry.dt * 1000);
+      const entryDateStr = entryDateObj.toDateString();
+
+      if (entryDateStr !== today && !addedDates.has(entryDateStr)) {
+        addedDates.add(entryDateStr);
+        if (addedDates.size > 5) return;
+
     
         const condition = entry.weather[0].main;
         const iconSrc = getWeatherIcon(condition);
@@ -141,7 +148,7 @@ function displayUserWeather(data) {
     const iconSrc = getWeatherIcon(weatherCondition);
 
     weatherInfo.innerHTML = `
-      <h2 class="city">${data.name}, ${data.sys.country}</h2>
+      <h2 id="city">${data.name}, ${data.sys.country}</h2>
 
       <div class="current-weather">
         <img loading="lazy" id="weather-icon" src="${iconSrc}" alt="Weather icon">
