@@ -49,11 +49,11 @@ async function checkWeatherBySearch(city){
       document.getElementById('weather-container').style.display = 'block';
       document.getElementsByClassName('error')[0].style.display = 'none';
       localStorage.setItem('lastCity', city);
-      document.querySelector('#city').innerHTML = data.name;
+      document.getElementById('city').innerHTML = data.name;
       document.getElementById('date').innerHTML = new Date(data.dt * 1000).toLocaleDateString();
-      document.querySelector("#temperature").innerHTML = Math.round(data.main.temp) + "°C";
-      document.querySelector("#humidity").innerHTML = data.main.humidity + "%";
-      document.querySelector("#wind").innerHTML = data.wind.speed + "km/h";
+      document.getElementById("temperature").innerHTML = Math.round(data.main.temp) + "°C";
+      document.getElementById("humidity").innerHTML = data.main.humidity + "%";
+      document.getElementById("wind").innerHTML = data.wind.speed + "m/s";
       document.getElementById('weather-description').innerHTML = data.weather[0].description;
       const weatherCondition = data.weather[0].main;
       weatherIcon.src = getWeatherIcon(weatherCondition);
@@ -103,7 +103,7 @@ function display5DaysForecast(forecast) {
         const tempContainer = document.createElement('div');
         tempContainer.className = 'temperature-container';
   
-        const temp = document.createElement('p');
+        const temp = document.createElement('h3');
         temp.id = 'temperature';
         temp.innerHTML = `${Math.round(entry.main.temp)} °C`;
   
@@ -162,12 +162,12 @@ function displayUserWeather(data) {
         <div class="detail">
           <img loading="lazy" id="humidity-icon" src="/images/humidity.png" alt="Humidity icon">
           <span class="label">Humidity</span>
-          <p> ${data.main.humidity}%</p>
+          <span id="humidity" class="value"> ${data.main.humidity}%</span>
         </div>
         <div class="detail">
           <img loading="lazy" id="wind-icon" src="/images/wind.png" alt="Wind icon">
           <span class="label">Wind</span>
-          <p> ${data.wind.speed} m/s</p>
+          <span id="wind" class="value"> ${data.wind.speed} m/s</span>
         </div>
       </div>
     `;

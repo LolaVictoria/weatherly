@@ -280,7 +280,7 @@ footer p, footer a {
         align-items: center;
     }
 
-    .weather-container h3 {
+    .weather-container h3,  .location-weather h3, .forecast h3 {
         font-size: 1.5rem;
     }
     
