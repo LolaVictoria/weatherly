@@ -105,11 +105,11 @@ function display5DaysForecast(forecast) {
   
         const temp = document.createElement('p');
         temp.id = 'temperature';
-        temp.innerHTML = `<strong>Temp:</strong> ${Math.round(entry.main.temp)} °C`;
+        temp.innerHTML = `${Math.round(entry.main.temp)} °C`;
   
         const description = document.createElement('p');
         description.id = 'weather-description';
-        description.innerHTML = `<strong>Weather:</strong> ${entry.weather[0].description}`;
+        description.innerHTML = ` ${entry.weather[0].description}`;
   
         tempContainer.appendChild(temp);
         tempContainer.appendChild(description);
