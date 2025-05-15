@@ -84,6 +84,7 @@ body {
     margin-right: 2.5px;
 }
 
+
 #search-btn:focus, #locationBtn:focus, #installBtn:focus {
     outline: none;
     box-shadow: 0 0 5px rgba(33, 150, 243, 0.5);

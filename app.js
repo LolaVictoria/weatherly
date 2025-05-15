@@ -81,7 +81,7 @@ function display5DaysForecast(forecast) {
 
       if (entryDateStr !== today && !addedDates.has(entryDateStr)) {
         addedDates.add(entryDateStr);
-        if (addedDates.size > 5) return;
+        if (addedDates.size > 6) return;
 
     
         const condition = entry.weather[0].main;
