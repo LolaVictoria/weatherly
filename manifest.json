@@ -42,12 +42,6 @@
     },
     {
       "src": "images/screenshots/mobile-screenshot-1.png",
-      "sizes": "720x1411",
-      "type": "image/png",
-      "form_factor": "narrow"
-    },
-    {
-      "src": "images/screenshots/mobile-screenshot-2.png",
       "sizes": "720x1417",
       "type": "image/png",
       "form_factor": "narrow"
