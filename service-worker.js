@@ -11,9 +11,9 @@ if (workbox) {
   workbox.precaching.precacheAndRoute([
     { url: '/index.html', revision: '29' },
     { url: '/style.css', revision:'38' },
-    { url: '/app.js', revision: '69' },
+    { url: '/app.js', revision: '70' },
     { url: '/images/logo.png', revision: '2' },
-    { url: '/manifest.json', revision: '6' },
+    { url: '/manifest.json', revision: '8' },
     { url: '/offline.html', revision: '1' },
   ]);
 

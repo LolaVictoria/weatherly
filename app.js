@@ -261,7 +261,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const installBtn = document.getElementById('installBtn');
 
   window.addEventListener('beforeinstallprompt', (e) => {
-    // Prevent default mini-infobar
     e.preventDefault();
     deferredPrompt = e;
 
@@ -286,6 +285,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+
+  //Confirm successful installation.
   window.addEventListener('appinstalled', () => {
     console.log('PWA was installed');
   });
