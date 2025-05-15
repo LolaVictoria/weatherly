@@ -257,18 +257,24 @@ if('serviceWorker' in navigator){
 
 let deferredPrompt;
 
-window.addEventListener('beforeinstallprompt', (e) => {
+document.addEventListener('DOMContentLoaded', () => {
+  const installBtn = document.getElementById('installBtn');
+
+  window.addEventListener('beforeinstallprompt', (e) => {
+    // Prevent default mini-infobar
     e.preventDefault();
     deferredPrompt = e;
-  
-    // show a custom install button to the user
-    const installBtn = document.getElementById('installBtn');
+
+    // Show the button
     installBtn.style.display = 'block';
-  
+
     installBtn.addEventListener('click', () => {
+      // Directly triggered by user click
+      installBtn.style.display = 'none';
+
       // Show the install prompt
       deferredPrompt.prompt();
-      // Wait for the user's response
+
       deferredPrompt.userChoice.then((choiceResult) => {
         if (choiceResult.outcome === 'accepted') {
           console.log('User accepted the install prompt');
@@ -283,4 +289,4 @@ window.addEventListener('beforeinstallprompt', (e) => {
   window.addEventListener('appinstalled', () => {
     console.log('PWA was installed');
   });
-  
+});

@@ -73,7 +73,7 @@ body {
     color: #999;
 }   
 
-#search-btn, #locationBtn, #installBtn {
+#search-btn, #locationBtn {
     background-color: #2196f3;
     color: white;
     border: none;
@@ -84,6 +84,17 @@ body {
     margin-right: 2.5px;
 }
 
+
+#installBtn {
+    background-color: #2196f3;
+    color: white;
+    border: none;
+    padding: 0.75rem 1rem;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    
+}
 
 #search-btn:focus, #locationBtn:focus, #installBtn:focus {
     outline: none;
@@ -239,16 +250,7 @@ body {
     text-align: center;
 }
 
-#installBtn {
-    background-color: #2196f3;
-    color: white;
-    border: none;
-    padding: 0.75rem 1rem;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 1rem;
-    
-}
+
 
 footer {
     background-color: #2196f3;

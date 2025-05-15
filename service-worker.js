@@ -9,9 +9,9 @@ if (workbox) {
 
   // Precache critical files with revisions (update revisions when files change)
   workbox.precaching.precacheAndRoute([
-    { url: '/index.html', revision: '27' },
-    { url: '/style.css', revision:'37' },
-    { url: '/app.js', revision: '67' },
+    { url: '/index.html', revision: '29' },
+    { url: '/style.css', revision:'38' },
+    { url: '/app.js', revision: '69' },
     { url: '/images/logo.png', revision: '2' },
     { url: '/manifest.json', revision: '6' },
     { url: '/offline.html', revision: '1' },
