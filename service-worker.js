@@ -1,7 +1,7 @@
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.5.4/workbox-sw.js');
 
 // Force waiting service worker to become active
-workbox.core.self.skipWaiting();
+workbox.core.skipWaiting();
 workbox.core.clientsClaim();
 
 if (workbox) {
@@ -45,7 +45,7 @@ if (workbox) {
     new workbox.strategies.CacheFirst({
       cacheName: 'static-cache',  
       plugins: [
-        new workbox.expiration.Plugin({
+        new workbox.expiration.ExpirationPlugin({
           maxAgeSeconds: 7 * 24 * 60 * 60,  // Cache static resources for 7 days
         }),
       ],
@@ -53,18 +53,18 @@ if (workbox) {
   );
 
   // Serve HTML pages with Network First and offline fallback
-  workbox.routing.registerRoute(
-    ({ request }) => request.mode === 'navigate',
-    async ({ event }) => {
-      try {
-        return await workbox.strategies.networkFirst({
-          cacheName: 'pages-cache',
-        }).handle({ request: event.request });
-      } catch (error) {
-        return caches.match('/offline.html');
-      }
-    }
-  );
+ workbox.routing.registerRoute(
+  ({ request }) => request.mode === 'navigate',
+  new workbox.strategies.NetworkFirst({
+    cacheName: 'pages-cache',
+    plugins: [
+      {
+        handlerDidError: async () => caches.match('/offline.html'),
+      },
+    ],
+  })
+);
+
 
   
 } else {
@@ -78,7 +78,7 @@ self.addEventListener('activate', event => {
     'weather-api-cache',
     'image-cache',
     'pages-cache',
-    'static-resources'
+    'static-cache'
   ];
 
   event.waitUntil(
