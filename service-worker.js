@@ -53,16 +53,24 @@ if (workbox) {
   );
 
   // Serve HTML pages with Network First and offline fallback
- workbox.routing.registerRoute(
+// Serve HTML pages with Network First and offline fallback
+workbox.routing.registerRoute(
   ({ request }) => request.mode === 'navigate',
-  new workbox.strategies.NetworkFirst({
-    cacheName: 'pages-cache',
-    plugins: [
-      {
-        handlerDidError: async () => caches.match('/offline.html'),
-      },
-    ],
-  })
+  async ({ event }) => {
+    try {
+      const response = await workbox.strategies.networkFirst({
+        cacheName: 'pages-cache',
+        plugins: [
+          new workbox.expiration.ExpirationPlugin({
+            maxEntries: 50,
+          }),
+        ],
+      }).handle({ event });
+      return response || await caches.match('/offline.html');
+    } catch (error) {
+      return await caches.match('/offline.html');
+    }
+  }
 );
 
 
